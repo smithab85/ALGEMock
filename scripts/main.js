@@ -2,6 +2,8 @@
 const myHeading = document.querySelector("h1");
 myHeading.textContent = "Hello world!";
 
+const connProbPara = document.querySelector("#connId");
+
 let myButton = document.querySelector("button");
 myButton.onclick = () => {
     setProb();
@@ -21,7 +23,8 @@ const sendRandomNumber = (num) => {
     }).then((response) => {
         return response.json();
     }).then((json) => {
-        console.log(json, "YO SENT?!");
+        const percent = (json * 100).toFixed(1);
+        connProbPara.innerHTML = "Connection percentage: " + percent + "%";
     }).catch(error => console.log('HI'));
 }
 
@@ -31,8 +34,14 @@ function setProb() {
         setProb();
     } else {
         localStorage.setItem("prob", myProb);
-        myHeading.textContent = `Your Probability, ${myProb}`;
+        myHeading.textContent = `Your Probability (you sent lol), ${myProb}`;
 
         sendRandomNumber(myProb);
     }
 }
+
+setInterval(() => {
+    const numToSend = Math.floor(Math.random() * 100) + 1;
+    console.log("Sending:", numToSend.toFixed(1));
+    sendRandomNumber(numToSend);
+}, 500);

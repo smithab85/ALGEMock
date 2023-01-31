@@ -13,7 +13,9 @@ const THRESHOLD = 90    //non-inclusive,
 
 const app = express();
 const webpageDir = `${__dirname}`;
-const connectionPercentTable = [];
+
+let belowThresholdRNGCount = 0;
+let rngCount = 0;
 
 //---------------- INIT ----------------//
 
@@ -23,19 +25,11 @@ app.use(bodyParser.json());
 //---------------- FUNCTIONS ----------------//
 
 const computeConnectionPercentage = (sentRNG) => {
-    if (sentRNG !== undefined) {
-        connectionPercentTable.push(sentRNG);
+    rngCount++;
+    if (!isNaN(sentRNG) && sentRNG <= THRESHOLD) {
+        belowThresholdRNGCount++;
     }
-
-    let belowThresholdNumCount = 0;
-
-    connectionPercentTable.forEach((num) => {
-        if (num <= THRESHOLD) {
-            belowThresholdNumCount++;
-        }
-    })
-
-    return (belowThresholdNumCount / connectionPercentTable.length);
+    return (belowThresholdRNGCount / rngCount);
 }
 
 //---------------- ENDPOINTS ----------------//

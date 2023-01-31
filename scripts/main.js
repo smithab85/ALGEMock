@@ -10,7 +10,7 @@ myButton.onclick = () => {
 const sendRandomNumber = (num) => {
     const host = window.location.host;
 
-    fetch("https://" + host + "/connProb", {
+    fetch("http://localhost:3000/connProb", {
         method: 'POST',
         body: JSON.stringify({
             rng: num
@@ -22,7 +22,7 @@ const sendRandomNumber = (num) => {
         return response.json();
     }).then((json) => {
         console.log(json, "YO SENT?!");
-    }).catch(error => console.error('Error:', error));
+    }).catch(error => console.log('HI'));
 }
 
 function setProb() {

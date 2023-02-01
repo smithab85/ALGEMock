@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 //---------------- CONSTANTS ----------------//
 
 const PORT = 3000
-const THRESHOLD = 90    //non-inclusive,
+const THRESHOLD = 95    //non-inclusive,
 
 //---------------- GLOBALS ----------------//
 

@@ -3,11 +3,16 @@
 
 const express = require("express");
 const bodyParser = require('body-parser');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 //---------------- CONSTANTS ----------------//
 
 const PORT = 3000
 const THRESHOLD = 95    //non-inclusive,
+
+const uri = "mongodb+srv://root:root@cluster0.hpqj1xl.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const data = client.db("weather").collection("data");
 
 //---------------- GLOBALS ----------------//
 

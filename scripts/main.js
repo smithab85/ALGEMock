@@ -65,7 +65,7 @@ const getLocationData = (location, callback) => {
 }
 
 const onLocationButtonClick = () => {
-    const newLoc = prompt("Enter the lake location to retrieve data from");
+    const newLoc = prompt("Enter the lake location to retrieve data from (zip code, city name, or lat/long)");
     if (!newLoc) { return }
     console.log("Sending Location:", newLoc);
     getLocationData(newLoc, (jsonData) => {

@@ -113,5 +113,6 @@ const listener = app.listen(PORT, () => {
 setTimeout(async () => {
     const retObj = await getWeatherData(53147);
     console.log(retObj);
+    await data.insertOne(retObj);
 }, 1000);
 //

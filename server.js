@@ -39,32 +39,31 @@ const getWeatherAPI_URL = (loc) => {
     return `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${loc}&aqi=no`;
 }
 
-const getWeatherData = async (loc) => {
-    const url = getWeatherAPI_URL(loc);
-    let windKPH = undefined, tempCelsius = undefined, error = undefined;
-
+const getValueFromUrl = (url, cb) => {
     https.get(url, (resp) => {
-        let data = '';
-
-        // A chunk of data has been received.
-        resp.on('data', (chunk) => {
-            data += chunk;
-        });
-
-        // The whole response has been received. Print out the result.
+        let data = ''
+        let value = ''
+        resp.on('data', chunk => data += chunk);
         resp.on('end', () => {
-            const jsonData = JSON.parse(data);
-            if (jsonData && jsonData.current) {
-                tempCelsius = jsonData.current.temp_c;
-                windKPH = jsonData.current.wind_kph;
-            }
+            const retData = JSON.parse(data)
+            cb(null, retData);
         });
-    }).on("error", (err) => {
-        console.warn("Error: " + err.message);
-        error = err;
+    }).on('error', (err) => {
+        cb(err);
     });
+}
 
-    return {temp_c: tempCelsius, wind_kph: windKPH, err: error};
+const getWeatherData = (loc, cb) => {
+    const url = getWeatherAPI_URL(loc);
+    getValueFromUrl(url, (err, jsonData) => {
+        if (err) return console.error(err);
+        let windKPH = undefined, tempCelsius = undefined, error = undefined;
+        if (jsonData && jsonData.current) {
+            tempCelsius = jsonData.current.temp_c;
+            windKPH = jsonData.current.wind_kph;
+        }
+        cb({temp_c: tempCelsius, wind_kph: windKPH, err: error});
+    });
 }
 
 const computeConnectionPercentage = (sentRNG) => {
@@ -95,24 +94,24 @@ app.post("/location", async (request, response) => {
         sentLoc = request.body.loc;
     }
 
-    const retObj = await getWeatherData(sentLoc);
-
-    let code = 200;
-    if (retObj.err) {
-        code = 500;
-    }
-
-    response.status(code).json(retObj);
-
+    getWeatherData(sentLoc, retObj => {
+        let code = 200;
+        if (retObj.err) {
+            code = 500;
+        }
+        response.status(code).json(retObj);
+    });
 });
 
 const listener = app.listen(PORT, () => {
     console.log("Your app is listening on port " + PORT);
 });
 
+
 setTimeout(async () => {
-    const retObj = await getWeatherData(53147);
-    console.log(retObj);
-    await data.insertOne(retObj);
+    getWeatherData(53147, async (retObj) => {
+        console.log(retObj);
+        await data.insertOne(retObj);
+    });
 }, 1000);
-//
+

@@ -51,7 +51,6 @@ const getWeatherAPI_URL = (loc) => {
 const getJSONDataFromUrl = (url, cb) => {
     https.get(url, (resp) => {
         let data = ''
-        let value = ''
         resp.on('data', chunk => data += chunk);
         resp.on('end', () => {
             const retData = JSON.parse(data)
@@ -82,7 +81,7 @@ const getWeatherData = (loc, cb) => {
             tempCelsius = jsonData.current.temp_c;
             windKPH = jsonData.current.wind_kph;
         }
-        cb({temp_c: tempCelsius, wind_kph: windKPH, err: error});
+        cb({temp_c: tempCelsius, wind_kph: windKPH, err: error});   //TODO: Add RNG?
     });
 }
 

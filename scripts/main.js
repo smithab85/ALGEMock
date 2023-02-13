@@ -10,8 +10,8 @@ const connProbPara = document.querySelector("#connId");
 const myButton = document.querySelector("#customProb");
 const button100 = document.querySelector("#button100");
 const setLocationButton = document.querySelector("#setLocation");
-const locDataDisplay = document.getElementById("#locData");
-const locLastBadData = document.getElementById("#locLastBadData");
+const locDataDisplay = document.getElementById("locData");
+const locLastBadData = document.getElementById("locLastBadData");
 const badHighTemp = 20;
 const badLowTemp = -20;
 const badHighSpeed = 60;
@@ -89,37 +89,25 @@ const onLocationButtonClick = () => {
             alert("ALERT! BAD SENSOR DATA! wind speed is reported as " + jsonData.wind_kph + " kph which is outside the valid wind speed range");
             if(badTempFound) {
                 tempTextBad = "Last report of bad data at " + newLoc + " with bad temperature and wind speed readings";
-                alert("Last report of bad data at " + newLoc + " with bad temperature and wind speed readings");
             }
             else {
                 tempTextBad = "Last report of bad data at " + newLoc + " with bad wind speed readings";
                 tempTextData = "Data from " + newLoc + "\ntemperature " + jsonData.temp_c + " celsius";
-                alert("Last report of bad data at " + newLoc + " with bad wind speed readings");
-                alert("Data from " + newLoc + "\ntemperature " + jsonData.temp_c + " celsius");
             }
         }
         else{
             if(badTempFound) {
                 tempTextBad = "Last report of bad data at " + newLoc + " with bad temperature readings";
                 tempTextData = "Data from " + newLoc + "\nwind speed " + jsonData.wind_kph + " kph";
-                alert("Last report of bad data at " + newLoc + " with bad temperature readings");
-                alert("Data from " + newLoc + "\nwind speed " + jsonData.wind_kph + " kph");
             }
             else { //No bad data at all
                 tempTextData = "Data from " + newLoc + "\ntemperature " + jsonData.temp_c + " celsius, wind speed " + jsonData.wind_kph + " kph";
-                alert("Data from " + newLoc + "\ntemperature " + jsonData.temp_c + " celsius, wind speed " + jsonData.wind_kph + " kph");
             }
         }
-        // if(tempTextBad.length > 1) {
-        //     alert(tempTextBad);
-        //     console.log(tempTextBad);
-        //     locLastBadData.innerHTML = tempTextBad;
-        // }
-        // // if(tempTextData.length > 1) {
-        //     alert(tempTextData);
-        //     console.log(tempTextData);
-        //     locDataDisplay.innerHTML = tempTextData;
-        // // }
+        if(tempTextBad.length > 1) {
+            locLastBadData.innerHTML = tempTextBad;
+        }
+            locDataDisplay.innerHTML = tempTextData;
     })
     currentLocation = newLoc;
 }

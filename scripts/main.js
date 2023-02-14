@@ -42,7 +42,7 @@ const sendRandomNumber = (num) => {
     }).then((json) => {
         const percent = (json * 100).toFixed(3);
         connProbPara.innerHTML = "Connection percentage: " + percent + "%";
-        if(percent < 85){
+        if(percent < 90){
             alert("The connection percentage is out of our valid range! Current Connection percentage: "+percent);
         }
     }).catch(error => console.log('HI'));
